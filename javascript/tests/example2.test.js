@@ -75,6 +75,7 @@ test("example 2.2", t => {
       ".output.0.points.2.y"
     ]
   })
+  t.assert(csvString.match(/0\.13557046979865772/g).length === 1)
   t.snapshot(csvString)
   t.pass("no validation errors")
 })

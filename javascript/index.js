@@ -2,6 +2,7 @@ const papaparse = require("papaparse")
 const setIn = require("lodash/set")
 const getIn = require("lodash/get")
 const isEqual = require("lodash/isEqual")
+const merge = require("lodash/merge")
 const isEmpty = require("lodash/isEmpty")
 const cloneDeep = require("lodash/cloneDeep")
 const flat = require("flat")
@@ -99,7 +100,18 @@ function toCSV(
           ar[ri][ci] = undefined
         }
       }
-      setIn(reconstructedObject, basePath, ar[ri][ci])
+      if (
+        typeof ar[ri][ci] === "object" &&
+        getIn(reconstructedObject, basePath)
+      ) {
+        setIn(
+          reconstructedObject,
+          basePath,
+          merge(ar[ri][ci], getIn(reconstructedObject, basePath))
+        )
+      } else if (ar[ri][ci] !== undefined) {
+        setIn(reconstructedObject, basePath, ar[ri][ci])
+      }
     }
   }
 
