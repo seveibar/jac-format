@@ -3,6 +3,7 @@ const setIn = require("lodash/set")
 const getIn = require("lodash/get")
 const isEqual = require("lodash/isEqual")
 const isEmpty = require("lodash/isEmpty")
+const cloneDeep = require("lodash/cloneDeep")
 const flat = require("flat")
 
 function getCellValue(cell) {
@@ -29,7 +30,7 @@ function joinPath(p1, p2) {
 }
 
 function toCSV(
-  json,
+  originalJSON,
   {
     rows = ["."],
     columns = ["."],
@@ -37,6 +38,7 @@ function toCSV(
     removeRedundancies = true
   } = {}
 ) {
+  const json = cloneDeep(originalJSON)
   let ar = [["path"].concat(columns)]
 
   // Normalize column definitions
@@ -58,7 +60,7 @@ function toCSV(
   if (removeRedundancies) {
     // Simplify each cell so cells never include unnecessary information
     const allPaths = rows.flatMap((r, ri) =>
-      columns.map((c, ci) => [r + c, ri + 1, ci + 1])
+      columns.map((c, ci) => [joinPath(r, c), ri + 1, ci + 1])
     )
     // Paths are applied in reverse order
     allPaths.reverse()
@@ -66,6 +68,7 @@ function toCSV(
     let reconstructedObject = {}
     for (const [basePath, ri, ci] of allPaths) {
       if (ar[ri][ci] === null) continue
+      if (ar[ri][ci] === undefined) continue
       if (typeof ar[ri][ci] === "object") {
         // flatten this object to get the subpaths
         const flattenedObject = flat.flatten(ar[ri][ci])
@@ -85,7 +88,7 @@ function toCSV(
             }
           }
           if (isEmpty(newObject)) {
-            ar[ri][ci] = ""
+            ar[ri][ci] = undefined
           } else {
             ar[ri][ci] = newObject
           }
@@ -93,7 +96,7 @@ function toCSV(
       } else {
         const existingValue = getIn(reconstructedObject, basePath)
         if (existingValue === ar[ri][ci]) {
-          ar[ri][ci] = ""
+          ar[ri][ci] = undefined
         }
       }
       setIn(reconstructedObject, basePath, ar[ri][ci])
@@ -112,12 +115,13 @@ function toCSV(
 
   if (validate) {
     const resultJSON = JSON.parse(JSON.stringify(toJSON(result)))
-    const normalizedJSON = JSON.parse(JSON.stringify(json))
+    const normalizedJSON = JSON.parse(JSON.stringify(originalJSON))
+
     if (!isEqual(resultJSON, normalizedJSON)) {
       throw new Error(
         "Validation after conversion to JAC CSV failed. The JAC CSV is missing information that the original JSON had.\n\n" +
           `Original JSON: ${JSON.stringify(
-            json,
+            originalJSON,
             null,
             "  "
           )}\n\nJAC CSV converted JSON: ${JSON.stringify(

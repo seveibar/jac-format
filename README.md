@@ -80,6 +80,8 @@ JAC.toJSON(csvString)
 
 ## Pros & Cons
 
-The flexibility of the JAC CSV format allows applications that output JAC CSV to give the user CSV data in a "flattening" that is most convenient for the application i.e. Columns can be created to make it easy for the user to modify the data.
+1. The flexibility of the JAC CSV format allows applications that output JAC CSV to give the user CSV data in a "flattening" that is most convenient for the application i.e. Columns can be created to make it easy for the user to modify the data.
+2. As a result of the flexibility in the JAC CSV format, one JSON file can have almost an infinite amount of CSV variations.
+3. Column order matters because it determines how the CSV is merged back into JSON
 
-As a result of the flexibility in the JAC CSV format, one JSON file can have almost an infinite amount of variations.
+
