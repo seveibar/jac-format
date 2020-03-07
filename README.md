@@ -35,7 +35,7 @@ When this file is converted into JSON, it becomes:
 `npm install jac-format`
 
 ```javascript
-const JAC = require("./javascript")
+const JAC = require("jac-format")
 
 let csvString = JAC.toCSV({
   "fruit": [{ "name": "apple" }, { "name": "lemon" }]
