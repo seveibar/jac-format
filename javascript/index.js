@@ -77,6 +77,14 @@ function toCSV(
         for (const subPath in flattenedObject) {
           const fullPath = joinPath(basePath, subPath)
           const existingValue = getIn(reconstructedObject, fullPath)
+          if (
+            (existingValue === null || existingValue === undefined) &&
+            (flattenedObject[subPath] === undefined ||
+              flattenedObject[subPath] === null)
+          ) {
+            pathsToRemove[subPath] = true
+            continue
+          }
           if (existingValue === flattenedObject[subPath]) {
             pathsToRemove[subPath] = true
           }

@@ -79,3 +79,57 @@ test("example 2.2", t => {
   t.snapshot(csvString)
   t.pass("no validation errors")
 })
+
+test("example 2.3", t => {
+  const json = {
+    interface: {
+      type: "image_segmentation",
+      availableLabels: ["valid", "invalid"],
+      regionTypesAllowed: ["bounding-box", "polygon", "point"]
+    },
+    samples: [
+      {
+        imageUrl:
+          "https://s3.amazonaws.com/asset.workaround.online/example-jobs/sticky-notes/image1.jpg",
+        output: [
+          {
+            regionType: "polygon",
+            color: "hsl(359,100%,50%)",
+            points: [
+              { x: 0.10921501706484642, y: 0.3122866894197952 },
+              { x: 0.10238907849829351, y: 0.40273037542662116 },
+              { x: 0.4800910125142207, y: 0.34812286689419797 },
+              { x: 0.459613196814562, y: 0.26109215017064846 }
+            ]
+          }
+        ]
+      },
+      {
+        imageUrl:
+          "https://s3.amazonaws.com/asset.workaround.online/example-jobs/sticky-notes/image2.jpg",
+        output: null
+      }
+    ]
+  }
+  const options = {
+    rows: ["interface", "samples.0", "samples.1"],
+    columns: [
+      ".",
+      "imageUrl",
+      "output",
+      "output.0.regionType",
+      "output.0.color",
+      "output.0.points.0.x",
+      "output.0.points.0.y",
+      "output.0.points.1.x",
+      "output.0.points.1.y",
+      "output.0.points.2.x",
+      "output.0.points.2.y",
+      "output.0.points.3.x",
+      "output.0.points.3.y"
+    ]
+  }
+
+  JAC.toCSV(json, options)
+  t.pass("no validation errors")
+})
