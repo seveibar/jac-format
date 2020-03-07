@@ -34,7 +34,7 @@ When this file is converted into JSON, it becomes:
 
 * JAC CSV files are valid CSVs
 * Each cell of a JAC CSV file is 1) a string or 2) a valid JSON object. Cells do not require quotes.
-* Columns are read in order from left to right. Each row creates an object. This object is then set at the path of the first column.
+* Columns right of the "path" column are applied in order from left to right. Each row creates an object. This object is then set at the path of the first column.
 
 ## Pros & Cons
 
