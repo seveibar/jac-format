@@ -15,10 +15,12 @@ function getCellValue(cell) {
 }
 
 function joinPath(p1, p2) {
+  p1 = p1.trim()
+  p2 = p2.trim()
   if (p1.endsWith(".")) p1 = p1.slice(0, -1)
   if (p2.endsWith(".")) p2 = p2.slice(0, -1)
   if (p1.startsWith(".")) p1 = p1.slice(1)
-  if (!p2.startsWith(".")) p2 = "." + p2
+  if (p2 && !p2.startsWith(".")) p2 = "." + p2
   return p1 + p2
 }
 
@@ -133,9 +135,7 @@ function toJSON(csvString) {
   const rows = papaparse.parse(csvString).data
 
   // Normalize and extract header
-  const header = [rows[0][0]].concat(
-    rows[0].slice(1).map(c => (c.startsWith(".") ? c : `.${c}`))
-  )
+  const header = rows[0].map(c => (c.startsWith(".") ? c : `.${c}`))
 
   let obj = {}
   for (const row of rows.slice(1)) {
