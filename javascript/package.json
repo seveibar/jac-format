@@ -1,0 +1,12 @@
+{
+  "name": "jac-format",
+  "scripts": {
+    "test": "ava **/*.test.js"
+  },
+  "dependencies": {
+    "ava": "^3.5.0",
+    "lodash": "^4.17.15",
+    "papaparse": "^5.1.1",
+    "prettier": "github:prettier/prettier"
+  }
+}
