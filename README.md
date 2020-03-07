@@ -35,20 +35,19 @@ When this file is converted into JSON, it becomes:
 `npm install jac-format`
 
 ```javascript
-const JAC = require("jac-format")
+const JAC = require("./javascript")
 
-JAC.toCSV({
+let csvString = JAC.toCSV({
   "fruit": [{ "name": "apple" }, { "name": "lemon" }]
 }, {
-  // Rows are optional
-  "rows": ["fruit.0", "fruit.1"],
-  
-  // Columns are optional
-  "columns": ["name"]
+  "rows": ["fruit.0", "fruit.1"], // optional
+  "columns": ["name"] // optional
 })
-// -> csvString
+// > "path,name\r\nfruit.0,apple\r\nfruit.1,lemon"
 
-// JAC.toJSON(csvString)
+// You can also use this
+JAC.toJSON(csvString)
+// > [Object]
 
 // JAC.fromCSV === JAC.toJSON
 // JAC.fromJSON === JAC.toCSV
