@@ -1,7 +1,7 @@
 const test = require("ava")
 const jac = require("../")
 
-test("should recreate normal empties correctly", t => {
+test("should recreate normal empties correctly (with redundancy)", t => {
   const json = {
     emptyArray: [],
     emptyObject: {},
@@ -9,7 +9,8 @@ test("should recreate normal empties correctly", t => {
     emptyObjectWithEmptyObject: { "": {} }
   }
 
-  t.snapshot(jac.toCSV(json))
+  jac.toCSV(json, { withoutRedundancy: false })
+  // t.snapshot(jac.toCSV(json, { withoutRedundancy: false }))
 
   t.deepEqual(json, jac.toJSON(jac.toCSV(json)))
 })
