@@ -21,6 +21,7 @@ function joinPath(p1, p2) {
   if (p2.endsWith(".")) p2 = p2.slice(0, -1)
   if (p1.startsWith(".")) p1 = p1.slice(1)
   if (!p2.startsWith(".")) p2 = "." + p2
+
   if (p1 === "." && p2 === ".") return "."
   if (p1 === "" && p2 === ".") return "."
   if (p2 === ".") return p1
