@@ -65,6 +65,7 @@ function toCSV(
 
     let reconstructedObject = {}
     for (const [basePath, ri, ci] of allPaths) {
+      if (ar[ri][ci] === null) continue
       if (typeof ar[ri][ci] === "object") {
         // flatten this object to get the subpaths
         const flattenedObject = flat.flatten(ar[ri][ci])
