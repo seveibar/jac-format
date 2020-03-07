@@ -44,13 +44,13 @@ let csvString = JAC.toCSV({
   "columns": ["name"] // optional
 })
 // "path,name\r\nfruit.0,apple\r\nfruit.1,lemon"
-// ┌─────────┬───────────┬─────────┐
-// │ (row #) │     0     │    1    │
-// ├─────────┼───────────┼─────────┤
-// │    0    │  'path'   │ 'name'  │
-// │    1    │ 'fruit.0' │ 'apple' │
-// │    2    │ 'fruit.1' │ 'lemon' │
-// └─────────┴───────────┴─────────┘
+// ┌───┬───────────┬─────────┐
+// │   │     A     │    B    │
+// ├───┼───────────┼─────────┤
+// │ 1 │  'path'   │ 'name'  │
+// │ 2 │ 'fruit.0' │ 'apple' │
+// │ 3 │ 'fruit.1' │ 'lemon' │
+// └───┴───────────┴─────────┘
 
 
 // You can also use this
