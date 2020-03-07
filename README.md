@@ -45,7 +45,7 @@ let csvString = JAC.toCSV({
 })
 // "path,name\r\nfruit.0,apple\r\nfruit.1,lemon"
 // ┌─────────┬───────────┬─────────┐
-// │ (index) │     0     │    1    │
+// │ (row #) │     0     │    1    │
 // ├─────────┼───────────┼─────────┤
 // │    0    │  'path'   │ 'name'  │
 // │    1    │ 'fruit.0' │ 'apple' │
