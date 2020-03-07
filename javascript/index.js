@@ -110,9 +110,9 @@ function toCSV(
   const result = papaparse.unparse(ar)
 
   if (validate) {
-    const resultJSON = toJSON(result)
+    const resultJSON = JSON.parse(JSON.stringify(toJSON(result)))
     const normalizedJSON = JSON.parse(JSON.stringify(json))
-    if (!isEqual(resultJSON, json)) {
+    if (!isEqual(resultJSON, normalizedJSON)) {
       throw new Error(
         "Validation after conversion to JAC CSV failed. The JAC CSV is missing information that the original JSON had.\n\n" +
           `Original JSON: ${JSON.stringify(
