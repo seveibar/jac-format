@@ -1,6 +1,6 @@
 # JAC (JSON as CSV) Format
 
-The JAC format makes it easy to convert to and from JSON and CSV file formats, while giving application developers a lot of flexibility to customize how easy it is to modify the CSV file for end users.
+The JAC format makes it easy to convert to and from JSON and CSV file formats, while giving application developers a lot of flexibility to customize how easy it is to modify the CSV file for end users. Any JSON object can be represented as a JAC CSV.
 
 `.jac.csv` files are always valid CSVs.
 
@@ -28,6 +28,31 @@ When this file is converted into JSON, it becomes:
     }
   ]
 }
+```
+
+## Usage with Javascript
+
+`npm install jac-format`
+
+```javascript
+const JAC = require("jac-format")
+
+JAC.toCSV({
+  "fruit": [{ "name": "apple" }, { "name": "lemon" }]
+}, {
+  // Rows are optional
+  "rows": ["fruit.0", "fruit.1"],
+  
+  // Columns are optional
+  "columns": ["name"]
+})
+// -> csvString
+
+// JAC.toJSON(csvString)
+
+// JAC.fromCSV === JAC.toJSON
+// JAC.fromJSON === JAC.toCSV
+
 ```
 
 ## Rules
