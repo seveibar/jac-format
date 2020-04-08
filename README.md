@@ -65,6 +65,8 @@ JAC.toJSON(csvString)
 ## Rules
 
 - JAC CSV files are valid CSVs
+- `path` is the first column
+- The first row (header) contains path segments (except for the `path` column)
 - Each value cell of a JAC CSV can be
   - 1. an empty cell
   - 2. a string
