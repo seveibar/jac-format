@@ -2,7 +2,7 @@ const test = require("ava")
 const jac = require("../")
 const papaparse = require("papaparse")
 
-test("toJSON 1.1", (t) => {
+test("derive path test 1", (t) => {
   const result = jac.fromCSV(
     `
 .,.color,.vitamins
@@ -11,7 +11,7 @@ test("toJSON 1.1", (t) => {
 
 `.trim(),
     {
-      derivePath: (rowIndex, obj) => {
+      derivePath: (obj, rowIndex) => {
         if (obj.color) {
           return "fruits.*"
         }
@@ -24,5 +24,28 @@ test("toJSON 1.1", (t) => {
   t.deepEqual(result, {
     fruits: [{ color: "red" }],
     veggies: [{ vitamins: "B" }],
+  })
+})
+
+test("derive path test 2", (t) => {
+  const result = jac.fromCSV(
+    `
+imageUrl
+https://example.com/image1.jpg
+https://example.com/image2.jpg
+https://example.com/image3.jpg
+`.trim(),
+    {
+      derivePath: (obj) => {
+        return "item.*"
+      },
+    }
+  )
+  t.deepEqual(result, {
+    item: [
+      { imageUrl: "https://example.com/image1.jpg" },
+      { imageUrl: "https://example.com/image2.jpg" },
+      { imageUrl: "https://example.com/image3.jpg" },
+    ],
   })
 })
