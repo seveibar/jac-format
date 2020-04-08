@@ -97,7 +97,19 @@ These tables are equivalent when converted to JSON:
 | friends.0 |      | Stacy | Rufus      |          |
 | friends.1 |      | Paul  | Mr. Fluffs | Whimpers |
 
-If "\*" are replaced by the smallest index in the path segment that's not already taken. There are two appropriate syntaxes, "[\*]" or ".\*"
+If "\*" are replaced by the smallest index in the path segment that's not already taken. There are two appropriate syntaxes, "[\*]" or ".\*".
+
+You can also use the `*` to refer to the last object created matching the prefix preceding the star. The example below is equivalent to the two tables above.
+
+| path              | .          | name  |
+|-------------------|------------|-------|
+| myName            | John       |       |
+| friends.\*        |            | Stacy |
+| friends.\*.dogs.0 | Rufus      |       |
+| friends.\*        |            | Paul  |
+| friends.\*.dogs.0 | Mr. Fluffs |       |
+| friends.\*.dogs.1 | Whimpers   |       |
+
 
 ## Pros & Cons
 
