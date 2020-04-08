@@ -97,7 +97,7 @@ These tables are equivalent when converted to JSON:
 | friends.0 |      | Stacy | Rufus      |          |
 | friends.1 |      | Paul  | Mr. Fluffs | Whimpers |
 
-If "\*" are replaced by the smallest index in the path segment that's not already taken.
+If "\*" are replaced by the smallest index in the path segment that's not already taken. There are two appropriate syntaxes, "[\*]" or ".\*"
 
 ## Pros & Cons
 
