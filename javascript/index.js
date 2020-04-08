@@ -207,7 +207,7 @@ function toJSON(csvString, options = {}) {
         (acc, v, vi) => ((acc[rows[0][vi].replace(/^\./, "")] = v), acc),
         {}
       )
-      const newPath = options.derivePath(i - 1, rowObject)
+      const newPath = options.derivePath(rowObject, i - 1)
       if (!newPath)
         throw new Error(
           "derivePath returned falsy for this row:\n" +
