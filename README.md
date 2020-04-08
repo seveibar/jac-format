@@ -81,6 +81,24 @@ JAC.toJSON(csvString)
 - If an array has undefined values, those values are set to `null`
 - A value cell's path is constructed by taking the leftmost cell of of a row (in the path column) and appending the topmost header to it
 
+## Automatic Indexing with "*"
+
+These tables are equivalent when converted to JSON:
+
+| path      | .    | name  | dogs.*     | dogs.*   |
+| --------- | ---- | ----- | ---------- | -------- |
+| myName    | John |       |            |          |
+| friends.* |      | Stacy | Rufus      |          |
+| friends.* |      | Paul  | Mr. Fluffs | Whimpers |
+
+| path      | .    | name  | dogs.0     | dogs.1   |
+| --------- | ---- | ----- | ---------- | -------- |
+| myName    | John |       |            |          |
+| friends.0 |      | Stacy | Rufus      |          |
+| friends.1 |      | Paul  | Mr. Fluffs | Whimpers |
+
+If "\*" are replaced by the smallest index in the path segment that's not already taken.
+
 ## Pros & Cons
 
 1. The flexibility of the JAC CSV format allows applications that output JAC CSV to give the user CSV data in a "flattening" that is most convenient for the application i.e. Columns can be created to make it easy for the user to modify the data.
