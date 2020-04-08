@@ -83,6 +83,8 @@ JAC.toJSON(csvString)
 
 ## Automatic Indexing with "*"
 
+Automatic indexing makes it easier to add and delete rows because index numbers don't need to be adjusted.
+
 These tables are equivalent when converted to JSON:
 
 | path      | .    | name  | dogs.*     | dogs.*   |
@@ -97,7 +99,7 @@ These tables are equivalent when converted to JSON:
 | friends.0 |      | Stacy | Rufus      |          |
 | friends.1 |      | Paul  | Mr. Fluffs | Whimpers |
 
-If "\*" are replaced by the smallest index in the path segment that's not already taken. There are two appropriate syntaxes, "[\*]" or ".\*".
+If "\*" are replaced by the smallest index in the path segment that's not already taken. There are two appropriate syntaxes, "[\*]" or ".\*". For a row, only the path segments in the row are considered (i.e. the header is converted into indicies without any information from the `path` column).
 
 You can also use the `*` to refer to the last object created matching the prefix preceding the star. The example below is equivalent to the two tables above.
 
