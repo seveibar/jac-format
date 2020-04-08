@@ -36,14 +36,14 @@ function toCSV(
     rows = ["."],
     columns = ["."],
     validate = true,
-    removeRedundancies = true
+    removeRedundancies = true,
   } = {}
 ) {
   const json = cloneDeep(originalJSON)
   let ar = [["path"].concat(columns)]
 
   // Normalize column definitions
-  columns = columns.map(c => (c.startsWith(".") ? c : `.${c}`))
+  columns = columns.map((c) => (c.startsWith(".") ? c : `.${c}`))
 
   for (let i = 0; i < rows.length; i++) {
     let row = [rows[i]]
@@ -160,11 +160,74 @@ function toCSV(
   return result
 }
 
-function toJSON(csvString) {
+function replacePathStars(paths) {
+  const newPaths = []
+  for (let i = 0; i < paths.length; i++) {
+    const path = paths[i]
+
+    if (!path.includes("*")) {
+      newPaths.push(path)
+      continue
+    }
+
+    const prefix = path.replace(/\[?\*.*/, "")
+
+    const isNewItem = path.replace(prefix, "").replace(/\*\]?/, "").length === 0
+
+    let lastNumber = null
+    for (let j = newPaths.length - 1; j >= 0; j--) {
+      if (newPaths[j].startsWith(prefix)) {
+        lastNumber = parseInt(
+          newPaths[j].replace(prefix, "").match(/\[?([0-9])+/)[1]
+        )
+        break
+      }
+    }
+
+    const newPath = path.replace(
+      "*",
+      lastNumber === null ? 0 : isNewItem ? lastNumber + 1 : lastNumber
+    )
+
+    newPaths.push(newPath)
+  }
+  return newPaths
+}
+
+function toJSON(csvString, options = {}) {
   const rows = papaparse.parse(csvString).data
 
+  if (rows[0][0] !== "path" && rows[0][0] !== "jac_csv_path") {
+    if (!options.derivePath)
+      throw new Error(
+        'No "path" or "jac_csv_path" in first cell (make sure this file is formatted in the JAC format https://github.com/seveibar/jac-format)'
+      )
+    for (let i = 1; i < rows.length; i++) {
+      const rowObject = rows[i].reduce(
+        (acc, v, vi) => ((acc[rows[0][vi].replace(/^\./, "")] = v), acc),
+        {}
+      )
+      const newPath = options.derivePath(i - 1, rowObject)
+      if (!newPath)
+        throw new Error(
+          "derivePath returned falsy for this row:\n" +
+            JSON.stringify(rowObject)
+        )
+      rows[i] = [newPath].concat(rows[i])
+    }
+    rows[0] = ["jac_csv_path"].concat(rows[0])
+  }
+
+  // Replace wildcards
+  const newPaths = replacePathStars(rows.slice(1).map((r) => r[0]))
+  rows.slice(1).forEach((modifiedRow, modifiedRowIndex) => {
+    modifiedRow[0] = newPaths[modifiedRowIndex]
+  })
+
   // Normalize and extract header
-  const header = rows[0].map(c => (c.startsWith(".") ? c : `.${c}`))
+  const header = replacePathStars(
+    rows[0].map((c) => (c.startsWith(".") ? c : `.${c}`))
+  )
 
   let obj = {}
   for (const row of rows.slice(1)) {
@@ -186,5 +249,7 @@ module.exports = {
   toCSV,
   toJSON,
   fromCSV: toJSON,
-  fromJSON: toCSV
+  fromJSON: toCSV,
+
+  replacePathStars,
 }
