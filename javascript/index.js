@@ -17,6 +17,8 @@ function getCellValue(cell) {
 }
 
 function joinPath(p1, p2) {
+  if (!p1) throw new Error(`Column path is empty!`)
+  if (!p2) throw new Error(`Row path is empty!`)
   p1 = p1.trim()
   p2 = p2.trim()
   if (p1.endsWith(".")) p1 = p1.slice(0, -1)
@@ -232,6 +234,8 @@ function toJSON(csvString, options = {}) {
   let obj = {}
   for (const row of rows.slice(1)) {
     for (let celli = 1; celli < row.length; celli++) {
+      if (header[celli] === undefined) continue
+      if (row[0] === undefined) continue
       const fullPath = joinPath(row[0], header[celli])
       const cellValue = getCellValue(row[celli])
       if (cellValue === undefined) continue
