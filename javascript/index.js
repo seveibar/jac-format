@@ -47,6 +47,13 @@ function toCSV(
   // Normalize column definitions
   columns = columns.map((c) => (c.startsWith(".") ? c : `.${c}`))
 
+  // If the column refers to an array, note the path to the item's parent
+  const columnParentArrayPath = columns.map((c) =>
+    !isNaN(parseInt(c.split(".").slice(-1)[0]))
+      ? c.split(".").slice(0, -1).join(".")
+      : null
+  )
+
   for (let i = 0; i < rows.length; i++) {
     let row = [rows[i]]
     for (let u = 0; u < columns.length; u++) {
@@ -54,6 +61,17 @@ function toCSV(
       if (fullPath === ".") {
         row.push(json)
         continue
+      }
+      if (columnParentArrayPath[u]) {
+        // make sure the part before the index is not a string
+        // i.e. the user can't use "string.0" as a path to the first char
+        if (
+          typeof getIn(json, joinPath(rows[i], columnParentArrayPath[u])) ===
+          "string"
+        ) {
+          row.push(undefined)
+          continue
+        }
       }
       row.push(getIn(json, fullPath))
     }
