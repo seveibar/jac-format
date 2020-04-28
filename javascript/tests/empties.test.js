@@ -9,7 +9,7 @@ test("should recreate normal empties correctly (with redundancy)", t => {
     emptyObjectWithEmptyObject: { "": {} }
   }
 
-  jac.toCSV(json, { withoutRedundancy: false })
+  jac.toCSV(json, { removeRedundancies: false })
   // t.snapshot(jac.toCSV(json, { withoutRedundancy: false }))
 
   t.deepEqual(json, jac.toJSON(jac.toCSV(json)))
