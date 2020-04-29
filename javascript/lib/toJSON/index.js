@@ -6,6 +6,8 @@ const getCellValue = require("./get-cell-value")
 
 function toJSON(csvString, options = {}) {
     const rows = papaparse.parse(csvString).data
+    
+    console.log("rows", rows)
 
     if (rows[0][0] !== "path" && rows[0][0] !== "jac_csv_path") {
         if (!options.derivePath)
@@ -29,15 +31,21 @@ function toJSON(csvString, options = {}) {
 
     // Replace wildcards
     const newPaths = replacePathStars(rows.slice(1).map((row) => row[0]))
+    
+    console.log("new_paths", newPaths)
 
     rows.slice(1).forEach((modifiedRow, modifiedRowIndex) => {
         modifiedRow[0] = newPaths[modifiedRowIndex]
     })
+    
+    console.log("rows", rows)
 
     // Normalize and extract header
     const header = replacePathStars(
         rows[0].map((column) => (column.startsWith(".") ? column : `.${column}`))
     )
+    
+    console.log("header", header)
 
     let obj = {}
     for (const row of rows.slice(1)) {
@@ -45,6 +53,9 @@ function toJSON(csvString, options = {}) {
             if (header[cellIndex] === undefined) continue
             if (row[0] === undefined) continue
             const fullPath = joinPath(row[0], header[cellIndex])
+            // join("samples.0", "cats.0")
+            // samples.0.cats.0
+            console.log(cellIndex, fullPath)
             const cellValue = getCellValue(row[cellIndex])
             if (cellValue === undefined) continue
             if (fullPath === ".") {
@@ -57,4 +68,8 @@ function toJSON(csvString, options = {}) {
     return obj
 }
 
-module.exports = toJSON
+console.log(toJSON(`path,.,.color,.vitamins
+fruits.0,,red,
+veggies.1,,,B`))
+
+// module.exports = toJSON
