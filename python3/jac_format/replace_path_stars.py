@@ -24,7 +24,6 @@ def replace_path_stars(paths):
     for (path_index, path) in paths_with_index:
         
         if not "*" in path:
-            print("DONE", path)
             new_paths.append(path)
             continue
         

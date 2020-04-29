@@ -1,0 +1,2 @@
+def flatten(obj):
+    pass
