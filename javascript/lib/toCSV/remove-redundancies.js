@@ -17,20 +17,14 @@ function removeRedundancies({ rows, columns, array }) {
     ])
   )
 
-  console.log("all_paths", allPaths)
-
   // Paths are applied in reverse order
   allPaths.reverse()
 
-  console.log("all_paths", allPaths)
-
   let reconstructedObject = {}
   for (const [basePath, rowIndex, columnIndex] of allPaths) {
-    console.log(basePath, rowIndex, columnIndex)
     if (array[rowIndex][columnIndex] === null) continue
     if (array[rowIndex][columnIndex] === undefined) continue
     if (typeof array[rowIndex][columnIndex] === "object") {
-      console.log(basePath, "is object")
       // flatten this object to get the subpaths
       const flattenedObject = flat.flatten(array[rowIndex][columnIndex])
       const pathsToRemove = {}
@@ -49,7 +43,6 @@ function removeRedundancies({ rows, columns, array }) {
           pathsToRemove[subPath] = true
         }
       }
-      console.log("paths_to_remove", pathsToRemove)
       if (!isEmpty(pathsToRemove)) {
         const newObject = {}
         for (const subPath in flattenedObject) {
@@ -64,9 +57,7 @@ function removeRedundancies({ rows, columns, array }) {
         }
       }
     } else {
-      console.log(basePath, "is not object")
       const existingValue = getIn(reconstructedObject, basePath)
-      console.log(basePath, "existing value", existingValue)
       if (existingValue === array[rowIndex][columnIndex]) {
         array[rowIndex][columnIndex] = undefined
       }
