@@ -2,7 +2,6 @@ from set_in import set_in
 
 
 def flatten(orig_dict, path_prefix=""):
-    print(path_prefix, orig_dict)
     flat_dict = {}
 
     if isinstance(orig_dict, list):
@@ -27,7 +26,20 @@ def flatten(orig_dict, path_prefix=""):
     return flat_dict
 
 
+def unflatten(flattened_dict):
+    nested_dict = {}
+
+    for key, value in flattened_dict.items():
+        nested_dict = set_in(nested_dict, key, value)
+
+    return nested_dict
+
+
 if __name__ == "__main__":
     assert flatten({"a": 1})["a"] == 1
     assert flatten({"a": [None, 2]})["a.1"] == 2
     assert flatten({"a": [None, {"b": 3}]})["a.1.b"] == 3
+
+    assert unflatten({"a": 1}) == {"a": 1}
+    assert unflatten({"a.1": 2}) == {"a": [None, 2]}
+    assert unflatten({"a.1.b": 3}) == {"a": [None, {"b": 3}]}
