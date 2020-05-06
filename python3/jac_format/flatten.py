@@ -1,4 +1,4 @@
-from set_in import set_in
+from .set_in import set_in
 
 
 def flatten(orig_dict, path_prefix=""):

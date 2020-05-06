@@ -2,7 +2,6 @@ import re
 
 
 def get_in_array_path(d, path):
-    print(d, path)
     if d is None:
         return None
     if len(path) == 0:
@@ -19,7 +18,7 @@ def get_in_array_path(d, path):
 
 def get_in(d, path):
     path = re.sub(r"\[([0-9]+)\]", r".\1", path)
-    path = [int(seg) if seg.isnumeric() else seg for seg in path]
+    path = [int(seg) if seg.isnumeric() else seg for seg in path.split(".")]
     return get_in_array_path(d, path)
 
 
