@@ -7,13 +7,13 @@ def set_in_path_array(d, path, val, prev_path=[]):
 
     seg = path[0]
 
-    if seg.isnumeric() and not (isinstance(d, list) or d is None):
+    if seg.isdigit() and not (isinstance(d, list) or d is None):
         raise ValueError(
             "Path didn't lead to list, but was being indexed like a list {}".format(
                 ".".join(prev_path)
             )
         )
-    if seg.isnumeric():
+    if seg.isdigit():
         seg = int(seg)
         if d is None:
             d = []

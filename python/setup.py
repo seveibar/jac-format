@@ -1,11 +1,13 @@
-from path import join
+from os.path import join, abspath, dirname
 from setuptools import setup, find_packages
 
+_here = abspath(dirname(__file__))
 
-with open(join(__dirname, "../README.md")) as f:
+
+with open(join(_here, "../README.md")) as f:
     readme = f.read()
 
-with open(join(__dirname, "../LICENSE")) as f:
+with open(join(_here, "../LICENSE")) as f:
     license = f.read()
 
 setup(

@@ -18,7 +18,7 @@ def get_in_array_path(d, path):
 
 def get_in(d, path):
     path = re.sub(r"\[([0-9]+)\]", r".\1", path)
-    path = [int(seg) if seg.isnumeric() else seg for seg in path.split(".")]
+    path = [int(seg) if seg.isdigit() else seg for seg in path.split(".")]
     return get_in_array_path(d, path)
 
 

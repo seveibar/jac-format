@@ -3,6 +3,7 @@ import io
 from .join_path import join_path
 from .get_in import get_in
 from .remove_redundancies import remove_redundancies
+from sys import version_info
 
 
 def to_csv(
@@ -48,8 +49,19 @@ def to_csv(
     if should_remove_redundancies:
         remove_redundancies(rows=rows, columns=columns, array=ar)
 
+    # make sure each cell value is in unicode
+    for rowi in range(len(ar)):
+        for coli in range(len(ar[rowi])):
+            if ar[rowi][coli] is None:
+                ar[rowi][coli] = ""
+            else:
+                ar[rowi][coli] = str(ar[rowi][coli])
+
     # turn ar into CSV
-    output = io.StringIO()
+    if version_info.major == 2:
+        output = io.BytesIO()
+    else:
+        output = io.StringIO()
     writer = csv.writer(output)
     writer.writerows(ar)
     result = output.getvalue()
