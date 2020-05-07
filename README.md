@@ -1,5 +1,7 @@
 # JAC (JSON as CSV) Format
 
+> The latest version of this format is maintained by [Universal Data Tool here](https://github.com/UniversalDataTool/jac-format)
+
 The JAC format makes it easy to convert to and from JSON and CSV file formats, while giving application developers a lot of flexibility to customize how easy it is to modify the CSV file for end users. Any JSON object can be represented as a JAC CSV.
 
 `.jac.csv` files are always valid CSVs.
