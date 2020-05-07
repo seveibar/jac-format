@@ -37,12 +37,15 @@ When this file is converted into JSON, it becomes:
 ```javascript
 const JAC = require("jac-format")
 
-let csvString = JAC.toCSV({
-  "fruit": [{ "name": "apple" }, { "name": "lemon" }]
-}, {
-  "rows": ["fruit.0", "fruit.1"], // optional
-  "columns": ["name"] // optional
-})
+let csvString = JAC.toCSV(
+  {
+    fruit: [{ name: "apple" }, { name: "lemon" }],
+  },
+  {
+    rows: ["fruit.0", "fruit.1"], // optional
+    columns: ["name"], // optional
+  }
+)
 // "path,name\r\nfruit.0,apple\r\nfruit.1,lemon"
 // ┌───┬───────────┬─────────┐
 // │   │     A     │    B    │
@@ -52,19 +55,46 @@ let csvString = JAC.toCSV({
 // │ 3 │ 'fruit.1' │ 'lemon' │
 // └───┴───────────┴─────────┘
 
-
 // You can also use this
 JAC.toJSON(csvString)
-// > [Object]
+// > { "fruit": [{ "name": "apple" }, { "name": "lemon" }] }
 
 // JAC.fromCSV === JAC.toJSON
 // JAC.fromJSON === JAC.toCSV
+```
 
+## Usage with Python
+
+`pip install jac_format`
+
+```python
+import jac_format as jac
+
+csv_string = jac.to_csv(
+  {
+    "fruit": [{ "name": "apple" }, { "name": "lemon" }],
+  },
+  rows=["fruit.0", "fruit.1"],
+  columns=["name"]
+)
+
+# > csv_string
+# "path,name\r\nfruit.0,apple\r\nfruit.1,lemon"
+# ┌───┬───────────┬─────────┐
+# │   │     A     │    B    │
+# ├───┼───────────┼─────────┤
+# │ 1 │  'path'   │ 'name'  │
+# │ 2 │ 'fruit.0' │ 'apple' │
+# │ 3 │ 'fruit.1' │ 'lemon' │
+# └───┴───────────┴─────────┘
+
+jac.to_json(csv_string)
+# { "fruit": [{ "name": "apple" }, { "name": "lemon" }] }
 ```
 
 ## Rules
 
-- JAC CSV files are valid CSVs
+- JAC CSV files are valid [RFC4180 CSVs](https://tools.ietf.org/html/rfc4180)
 - `jac_csv_path` or `path` is the first column, first cell
 - The first column contains the first path segment (except for the `jac_csv_path` cell)
 - The first row (header) contains the second path segment (except for the `jac_csv_path` cell)
@@ -81,17 +111,17 @@ JAC.toJSON(csvString)
 - If an array has undefined values, those values are set to `null`
 - A value cell's path is constructed by taking the leftmost cell of of a row (in the path column) and appending the topmost header to it
 
-## Automatic Indexing with "*"
+## Automatic Indexing with "\*"
 
 Automatic indexing makes it easier to add and delete rows because index numbers don't need to be adjusted.
 
 These tables are equivalent when converted to JSON:
 
-| path      | .    | name  | dogs.*     | dogs.*   |
-| --------- | ---- | ----- | ---------- | -------- |
-| myName    | John |       |            |          |
-| friends.* |      | Stacy | Rufus      |          |
-| friends.* |      | Paul  | Mr. Fluffs | Whimpers |
+| path       | .    | name  | dogs.\*    | dogs.\*  |
+| ---------- | ---- | ----- | ---------- | -------- |
+| myName     | John |       |            |          |
+| friends.\* |      | Stacy | Rufus      |          |
+| friends.\* |      | Paul  | Mr. Fluffs | Whimpers |
 
 | path      | .    | name  | dogs.0     | dogs.1   |
 | --------- | ---- | ----- | ---------- | -------- |
@@ -104,7 +134,7 @@ If "\*" are replaced by the smallest index in the path segment that's not alread
 You can also use the `*` to refer to the last object created matching the prefix preceding the star. The example below is equivalent to the two tables above.
 
 | path              | .          | name  |
-|-------------------|------------|-------|
+| ----------------- | ---------- | ----- |
 | myName            | John       |       |
 | friends.\*        |            | Stacy |
 | friends.\*.dogs.0 | Rufus      |       |
@@ -112,11 +142,8 @@ You can also use the `*` to refer to the last object created matching the prefix
 | friends.\*.dogs.0 | Mr. Fluffs |       |
 | friends.\*.dogs.1 | Whimpers   |       |
 
-
 ## Pros & Cons
 
 1. The flexibility of the JAC CSV format allows applications that output JAC CSV to give the user CSV data in a "flattening" that is most convenient for the application i.e. Columns can be created to make it easy for the user to modify the data.
 2. As a result of the flexibility in the JAC CSV format, one JSON file can have almost an infinite amount of CSV variations.
 3. Column order matters because it determines how the CSV is merged back into JSON
-
-

@@ -8,11 +8,11 @@ with open(join(_here, "../README.md")) as f:
     readme = f.read()
 
 with open(join(_here, "../LICENSE")) as f:
-    license = f.read()
+    license = f.read().replace("\n", "")
 
 setup(
     name="jac_format",
-    version="0.1.0",
+    version="0.1.1",
     description="JAC (JSON as CSV) Format Conversion",
     long_description=readme,
     long_description_content_type="text/markdown",
