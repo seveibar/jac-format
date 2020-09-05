@@ -30,6 +30,15 @@ When this file is converted into JSON, it becomes:
 }
 ```
 
+## Motivation
+
+CSV can be much easier for end users, especially if the end users are not programmers. But when converting a file into a CSV, I felt it was annoying to have to come up with some specification and maintain that specification against an internal JSON format.
+
+The JAC format allows you to easily define a conversion from your JSON format to your CSV format with enough flexibility such that nested JSON structures are
+still editable, and unimportant details are hidden.
+
+The JAC Format for the [Universal Data Tool](https://github.com/UniversalDataTool/universal-data-tool) to convert the JSON representation to and from readable CSV representations. [Here's an example of a `.jac.csv` file](https://github.com/UniversalDataTool/udt-format/blob/master/SAMPLE.udt.csv) output by the Universal Data Tool.
+
 ## Usage with Javascript
 
 `npm install jac-format`
