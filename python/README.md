@@ -1,6 +1,6 @@
 # JAC (JSON as CSV) Format
 
-The JAC format is a flexible CSV expression of JSON files that makes it easy to convert to and from JSON and CSV file formats, while giving application developers a lot of flexibility to customize how easy it is to modify the CSV file for end users. Any JSON object can be represented as a JAC CSV.
+The JAC format makes it easy to convert to and from JSON and CSV file formats, while giving application developers a lot of flexibility to customize how easy it is to modify the CSV file for end users. Any JSON object can be represented as a JAC CSV.
 
 `.jac.csv` files are always valid CSVs.
 
@@ -30,15 +30,6 @@ When this file is converted into JSON, it becomes:
 }
 ```
 
-## Motivation
-
-CSVs can be much easier for end users, especially if the end users are not programmers. But when converting a file into a CSV, I felt it was annoying to have to come up with some specification and maintain that specification against an internal JSON format.
-
-The JAC format allows you to easily define a conversion from your JSON format to your CSV format with enough flexibility such that nested JSON structures are
-still editable, and unimportant details are not emphasized (by being grouped in a cell).
-
-The JAC Format for the [Universal Data Tool](https://github.com/UniversalDataTool/universal-data-tool) to convert the JSON representation to and from readable CSV representations. [Here's an example of a `.jac.csv` file](https://github.com/UniversalDataTool/udt-format/blob/master/SAMPLE.udt.csv) output by the Universal Data Tool.
-
 ## Usage with Javascript
 
 `npm install jac-format`
@@ -51,7 +42,7 @@ let csvString = JAC.toCSV(
     fruit: [{ name: "apple" }, { name: "lemon" }],
   },
   {
-    rows: ["fruit.*"], // optional
+    rows: ["fruit.0", "fruit.1"], // optional
     columns: ["name"], // optional
   }
 )
@@ -70,8 +61,6 @@ JAC.toJSON(csvString)
 
 // JAC.fromCSV === JAC.toJSON
 // JAC.fromJSON === JAC.toCSV
-<<<<<<< HEAD
-=======
 ```
 
 ## Usage with Python
@@ -101,7 +90,6 @@ csv_string = jac.to_csv(
 
 jac.to_json(csv_string)
 # { "fruit": [{ "name": "apple" }, { "name": "lemon" }] }
->>>>>>> udt/master
 ```
 
 ## Rules

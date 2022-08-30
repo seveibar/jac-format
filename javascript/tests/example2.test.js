@@ -2,37 +2,37 @@ const test = require("ava")
 const JAC = require("../")
 const papaparse = require("papaparse")
 
-test("example 2.1", t => {
+test("example 2.1", (t) => {
   const json = {
     interface: {
       type: "image_segmentation",
       availableLabels: ["valid", "invalid"],
-      regionTypesAllowed: ["bounding-box", "polygon", "point"]
+      regionTypesAllowed: ["bounding-box", "polygon", "point"],
     },
     samples: [
       {
         imageUrl:
-          "https://s3.amazonaws.com/asset.workaround.online/example-jobs/sticky-notes/image1.jpg"
+          "https://s3.amazonaws.com/asset.workaround.online/example-jobs/sticky-notes/image1.jpg",
       },
       {
         imageUrl:
-          "https://s3.amazonaws.com/asset.workaround.online/example-jobs/sticky-notes/image2.jpg"
-      }
-    ]
+          "https://s3.amazonaws.com/asset.workaround.online/example-jobs/sticky-notes/image2.jpg",
+      },
+    ],
   }
   JAC.toCSV(json, {
     rows: ["interface", "samples.0", "samples.1"],
-    columns: [".", ".imageUrl", ".output"]
+    columns: [".", ".imageUrl", ".output"],
   })
   t.pass("no validation errors")
 })
 
-test("example 2.2", t => {
+test("example 2.2", (t) => {
   const json = {
     interface: {
       type: "image_segmentation",
       availableLabels: ["valid", "invalid"],
-      regionTypesAllowed: ["bounding-box", "polygon", "point"]
+      regionTypesAllowed: ["bounding-box", "polygon", "point"],
     },
     samples: [
       {
@@ -44,18 +44,18 @@ test("example 2.2", t => {
             points: [
               { x: 0.13557046979865772, y: 0.3030201342281879 },
               { x: 0.10604026845637583, y: 0.38859060402684564 },
-              { x: 0.14899328859060404, y: 0.41275167785234895 }
+              { x: 0.14899328859060404, y: 0.41275167785234895 },
             ],
-            regionType: "polygon"
-          }
-        ]
+            regionType: "polygon",
+          },
+        ],
       },
       {
         imageUrl:
           "https://s3.amazonaws.com/asset.workaround.online/example-jobs/sticky-notes/image2.jpg",
-        output: null
-      }
-    ]
+        output: null,
+      },
+    ],
   }
   const csvString = JAC.toCSV(json, {
     rows: ["interface", "samples.0", "samples.1"],
@@ -72,20 +72,20 @@ test("example 2.2", t => {
       ".output.0.points.1.x",
       ".output.0.points.1.y",
       ".output.0.points.2.x",
-      ".output.0.points.2.y"
-    ]
+      ".output.0.points.2.y",
+    ],
   })
   t.assert(csvString.match(/0\.13557046979865772/g).length === 1)
   t.snapshot(csvString)
   t.pass("no validation errors")
 })
 
-test("example 2.3", t => {
+test("example 2.3", (t) => {
   const json = {
     interface: {
       type: "image_segmentation",
       availableLabels: ["valid", "invalid"],
-      regionTypesAllowed: ["bounding-box", "polygon", "point"]
+      regionTypesAllowed: ["bounding-box", "polygon", "point"],
     },
     samples: [
       {
@@ -99,17 +99,17 @@ test("example 2.3", t => {
               { x: 0.10921501706484642, y: 0.3122866894197952 },
               { x: 0.10238907849829351, y: 0.40273037542662116 },
               { x: 0.4800910125142207, y: 0.34812286689419797 },
-              { x: 0.459613196814562, y: 0.26109215017064846 }
-            ]
-          }
-        ]
+              { x: 0.459613196814562, y: 0.26109215017064846 },
+            ],
+          },
+        ],
       },
       {
         imageUrl:
           "https://s3.amazonaws.com/asset.workaround.online/example-jobs/sticky-notes/image2.jpg",
-        output: null
-      }
-    ]
+        output: null,
+      },
+    ],
   }
   const options = {
     rows: ["interface", "samples.0", "samples.1"],
@@ -126,8 +126,8 @@ test("example 2.3", t => {
       "output.0.points.2.x",
       "output.0.points.2.y",
       "output.0.points.3.x",
-      "output.0.points.3.y"
-    ]
+      "output.0.points.3.y",
+    ],
   }
 
   JAC.toCSV(json, options)
