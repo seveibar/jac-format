@@ -54,6 +54,20 @@ function toCSV(
       : null
   )
 
+  // support .some.path.array.* in rows[]
+  rows = rows.flatMap((row) => {
+    if (row.endsWith(".*")) {
+      const arrayPath = row.replace(/\.\*$/, "")
+      const array = getIn(json, arrayPath)
+      const expanded_rows = []
+      for (let i = 0; i < array.length; i++) {
+        expanded_rows.push(joinPath(arrayPath, `.${i}`))
+      }
+      return expanded_rows
+    }
+    return row
+  })
+
   for (let i = 0; i < rows.length; i++) {
     let row = [rows[i]]
     for (let u = 0; u < columns.length; u++) {
