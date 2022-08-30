@@ -97,3 +97,27 @@ fruits.1,,green
 `.trim()
   )
 })
+
+test("toCSV 1.5", (t) => {
+  const result = jac.toCSV(
+    {
+      fruits: [
+        { properties: { color: "red" } },
+        { properties: { color: "green" } },
+      ],
+    },
+    {
+      columns: [".", "properties"],
+      rows: ["fruits.*"],
+    }
+  )
+
+  t.deepEqual(
+    result.trim().replace(/\r/g, ""),
+    `
+path,.,properties
+fruits.0,,"{""color"":""red""}"
+fruits.1,,"{""color"":""green""}"
+`.trim()
+  )
+})
