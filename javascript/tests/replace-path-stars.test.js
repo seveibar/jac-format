@@ -6,7 +6,7 @@ test("replace path stars 1", (t) => {
   t.deepEqual(
     jac.replacePathStars([
       "interface",
-      "samples.*",
+      "samples.0",
       "samples.*",
       "samples.*",
       "output.*",
