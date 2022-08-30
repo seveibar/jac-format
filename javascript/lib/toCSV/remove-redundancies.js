@@ -69,10 +69,12 @@ function removeRedundancies({ rows, columns, array }) {
       setIn(
         reconstructedObject,
         basePath,
-        merge(
-          array[rowIndex][columnIndex],
-          getIn(reconstructedObject, basePath)
-        )
+        // I'm not sure why this merge is here, it makes removing paths via
+        // pathsToRemove not work...
+        // merge(
+        //   array[rowIndex][columnIndex],
+        getIn(reconstructedObject, basePath)
+        // )
       )
     } else if (array[rowIndex][columnIndex] !== undefined) {
       setIn(reconstructedObject, basePath, array[rowIndex][columnIndex])
