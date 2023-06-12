@@ -9,6 +9,7 @@ const flat = require("flat")
 
 const removeRedundancies = require("./remove-redundancies")
 
+const reflect2dArray = require("../utils/reflect-2d-array.js")
 const joinPath = require("../utils/join-path.js")
 const toJSON = require("../toJSON")
 
@@ -19,11 +20,17 @@ function toCSV(
     columns = ["."],
     validate = true,
     removeRedundancies: shouldRemoveRedundancies = true,
+    columnFirst = false,
   } = {}
 ) {
   const json = cloneDeep(originalJSON)
 
-  let ar = [["path"].concat(columns)]
+  // HACK: in column first mode, process as if the rows are columns and vice
+  // versa, then adjust the CSV at the end
+  if (columnFirst) {
+    ;[rows, columns] = [columns, rows]
+  }
+  let ar = [[columnFirst ? "path (column first)" : "path"].concat(columns)]
 
   // Normalize column definitions
   columns = columns.map((c) => (c.startsWith(".") ? c : `.${c}`))
@@ -83,6 +90,10 @@ function toCSV(
         ar[ri][ci] = JSON.stringify(ar[ri][ci])
       }
     }
+  }
+
+  if (columnFirst) {
+    ar = reflect2dArray(ar)
   }
 
   const result = papaparse.unparse(ar)

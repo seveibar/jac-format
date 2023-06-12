@@ -70,8 +70,6 @@ JAC.toJSON(csvString)
 
 // JAC.fromCSV === JAC.toJSON
 // JAC.fromJSON === JAC.toCSV
-<<<<<<< HEAD
-=======
 ```
 
 ## Usage with Python
@@ -101,7 +99,6 @@ csv_string = jac.to_csv(
 
 jac.to_json(csv_string)
 # { "fruit": [{ "name": "apple" }, { "name": "lemon" }] }
->>>>>>> udt/master
 ```
 
 ## Rules
@@ -117,7 +114,7 @@ jac.to_json(csv_string)
   - 4. null
   - 5. a number
   - 7. a JSON array
-- Columns right of the "path" column are applied in order from left to right. Each row creates an object. This object is then set at the path of the first column.
+- Columns right of the "path" column are applied in order from left to right. Each row creates an object. This object is then set at the path of the first column. (except in [column-first mode](#column-first-mode))
 - A path can be traversed with either square bracket notation or dot notation
 - In dot notation, the usage of a number indicates the index of an array (`a["1"].0` is equivalent to `a["1"][0]`)
 - If an array has undefined values, those values are set to `null`
@@ -153,6 +150,17 @@ You can also use the `*` to refer to the last object created matching the prefix
 | friends.\*        |            | Paul  |
 | friends.\*.dogs.0 | Mr. Fluffs |       |
 | friends.\*.dogs.1 | Whimpers   |       |
+
+## Column-First Mode
+
+If "path (column first)" is in the first cell of the first row, then columns
+are applied as the first segment of the path, and rows are applied as the second
+segment. This is great for data that that grows over time.
+
+| path (column first) | .   | weeks.0 | weeks.1 | weeks.2 |
+| ------------------- | --- | ------- | ------- | ------- |
+| A.pr_count          |     | 3       | 2       | 1       |
+| B.pr_count          |     | 2       | 1       | 3       |
 
 ## Pros & Cons
 

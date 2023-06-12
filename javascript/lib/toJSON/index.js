@@ -3,11 +3,22 @@ const replacePathStars = require("../utils/replace-path-stars")
 const joinPath = require("../utils/join-path.js")
 const setIn = require("lodash/set")
 const getCellValue = require("./get-cell-value")
+const reflect2dArray = require("../utils/reflect-2d-array.js")
 
 function toJSON(csvString, options = {}) {
-  const rows = papaparse.parse(csvString).data
+  let rows = papaparse.parse(csvString).data
 
-  if (rows[0][0] !== "path" && rows[0][0] !== "jac_csv_path") {
+  const isColumnFirst = rows[0][0] === "path (column first)"
+  // HACK: reflect the array if we're in column first mode
+  if (isColumnFirst) {
+    rows = reflect2dArray(rows)
+  }
+
+  if (
+    rows[0][0] !== "path" &&
+    rows[0][0] !== "path (column first)" &&
+    rows[0][0] !== "jac_csv_path"
+  ) {
     if (!options.derivePath)
       throw new Error(
         'No "path" or "jac_csv_path" in first cell (make sure this file is formatted in the JAC format https://github.com/seveibar/jac-format)'
